@@ -26,7 +26,7 @@ class TransactionModel {
     return {
       'id': id,
       'amount': amount,
-      'type': type,
+      'type': type.name,
       'category': category,
       'note': note,
       'paymentMethod': paymentMethod,

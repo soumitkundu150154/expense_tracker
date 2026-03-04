@@ -29,9 +29,10 @@ class TransactionService {
           amount REAL,
           type TEXT,
           category TEXT,
+          note TEXT,
           paymentMethod TEXT,
           date TEXT,
-          createdAt TEXT,
+          createdAt TEXT
           )
           ''');
       },
@@ -43,7 +44,7 @@ class TransactionService {
     final db = await database;
 
     await db?.insert(
-      'transaction',
+      'transactions',
       transaction.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -87,9 +88,3 @@ class TransactionService {
     return initialBalance + income - expense;
   }
 }
-
-
-
-
-
-
