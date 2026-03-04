@@ -2,6 +2,7 @@ import 'package:expense_tracker/models/transaction_model.dart';
 import 'package:expense_tracker/models/transaction_type.dart';
 import 'package:expense_tracker/pages/transaction_page.dart';
 import 'package:expense_tracker/services/transaction_service.dart';
+// import 'package:expense_tracker/theme/app_theme.dart';
 import 'package:expense_tracker/theme/deep_finance.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,25 +70,19 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F6FA),
+      backgroundColor: AppTheme.background,
       appBar: AppBar(
-        title: const Text(
-          'Dashboard',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: Colors.black87,
+        title: const Text('Dashboard'),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: CircleAvatar(
               radius: 18,
-              backgroundColor: AppTheme.primaryAccent.withOpacity(0.15),
+              backgroundColor: AppTheme.primaryDim,
               child: Text(
                 userName.isNotEmpty ? userName[0].toUpperCase() : '?',
-                style: TextStyle(
-                  color: AppTheme.primaryAccent,
+                style: const TextStyle(
+                  color: AppTheme.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
@@ -104,7 +99,6 @@ class _DashboardState extends State<Dashboard> {
           );
           loadData();
         },
-        backgroundColor: AppTheme.primaryAccent,
         icon: const Icon(Icons.add, color: Colors.white),
         label: const Text('Add', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
       ),
@@ -120,11 +114,11 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   TextSpan(
                     text: '${getGreeting()},\n',
-                    style: const TextStyle(fontSize: 15, color: Colors.black45, height: 2),
+                    style: const TextStyle(fontSize: 15, color: AppTheme.textSecondary, height: 2),
                   ),
                   TextSpan(
                     text: '$userName 👋',
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
                   ),
                 ],
               ),
@@ -141,10 +135,14 @@ class _DashboardState extends State<Dashboard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Recent Transactions',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: Colors.black87)),
-                Text('${transactions.length} total',
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade400)),
+                const Text(
+                  'Recent Transactions',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
+                ),
+                Text(
+                  '${transactions.length} total',
+                  style: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -167,11 +165,10 @@ class _DashboardState extends State<Dashboard> {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8, offset: const Offset(0, 2)),
-        ],
+        border: Border.all(color: AppTheme.border),
+        boxShadow: AppTheme.cardShadow,
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -179,21 +176,27 @@ class _DashboardState extends State<Dashboard> {
           width: 44,
           height: 44,
           decoration: BoxDecoration(
-            color: (isExpense ? AppTheme.danger : AppTheme.success).withOpacity(0.12),
+            color: isExpense ? AppTheme.expenseDim : AppTheme.incomeDim,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             isExpense ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded,
-            color: isExpense ? AppTheme.danger : AppTheme.success,
+            color: isExpense ? AppTheme.expense : AppTheme.income,
             size: 20,
           ),
         ),
-        title: Text(t.category, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: Colors.black87)),
-        subtitle: Text(t.note, style: TextStyle(fontSize: 12, color: Colors.grey.shade500)),
+        title: Text(
+          t.category,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: AppTheme.textPrimary),
+        ),
+        subtitle: Text(
+          t.note,
+          style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+        ),
         trailing: Text(
           "${isExpense ? "−" : "+"} ₹${t.amount.toStringAsFixed(2)}",
           style: TextStyle(
-            color: isExpense ? AppTheme.danger : AppTheme.success,
+            color: isExpense ? AppTheme.expense : AppTheme.income,
             fontWeight: FontWeight.w700,
             fontSize: 15,
           ),
@@ -203,14 +206,14 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget _emptyState() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 40),
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 40),
       child: Center(
         child: Column(
           children: [
-            Icon(Icons.receipt_long_outlined, size: 52, color: Colors.grey.shade300),
-            const SizedBox(height: 12),
-            Text('No transactions yet', style: TextStyle(color: Colors.grey.shade400, fontSize: 14)),
+            Icon(Icons.receipt_long_outlined, size: 52, color: AppTheme.textMuted),
+            SizedBox(height: 12),
+            Text('No transactions yet', style: TextStyle(color: AppTheme.textSecondary, fontSize: 14)),
           ],
         ),
       ),
@@ -227,15 +230,13 @@ Widget _balanceCard(dynamic currentBalance) {
     decoration: BoxDecoration(
       gradient: AppTheme.balanceGradient,
       borderRadius: BorderRadius.circular(20),
-      boxShadow: [
-        BoxShadow(color: Colors.deepPurple.withOpacity(0.28), blurRadius: 20, offset: const Offset(0, 8)),
-      ],
+      boxShadow: AppTheme.primaryGlow,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: const [
+        const Row(
+          children: [
             Icon(Icons.account_balance_wallet_outlined, color: Colors.white70, size: 16),
             SizedBox(width: 6),
             Text("Current Balance", style: TextStyle(color: Colors.white70, fontSize: 13)),
@@ -265,34 +266,39 @@ Widget _balanceCard(dynamic currentBalance) {
 Widget _summaryRow(double income, double expense, double net) {
   return Row(
     children: [
-      Expanded(child: _summaryCard(title: "Income", amount: "₹${income.toStringAsFixed(0)}", color: AppTheme.success, icon: Icons.trending_up_rounded)),
+      Expanded(child: _summaryCard(title: "Income", amount: "₹${income.toStringAsFixed(0)}", color: AppTheme.income, icon: Icons.trending_up_rounded, dimColor: AppTheme.incomeDim)),
       const SizedBox(width: 10),
-      Expanded(child: _summaryCard(title: "Expense", amount: "₹${expense.toStringAsFixed(0)}", color: AppTheme.danger, icon: Icons.trending_down_rounded)),
+      Expanded(child: _summaryCard(title: "Expense", amount: "₹${expense.toStringAsFixed(0)}", color: AppTheme.expense, icon: Icons.trending_down_rounded, dimColor: AppTheme.expenseDim)),
       const SizedBox(width: 10),
-      Expanded(child: _summaryCard(title: "Net", amount: "₹${net.toStringAsFixed(0)}", color: AppTheme.primaryAccent, icon: Icons.balance_rounded)),
+      Expanded(child: _summaryCard(title: "Net", amount: "₹${net.toStringAsFixed(0)}", color: AppTheme.primary, icon: Icons.balance_rounded, dimColor: AppTheme.primaryDim)),
     ],
   );
 }
 
-Widget _summaryCard({required String title, required String amount, required Color color, required IconData icon}) {
+Widget _summaryCard({
+  required String title,
+  required String amount,
+  required Color color,
+  required IconData icon,
+  required Color dimColor,
+}) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
     decoration: BoxDecoration(
-      color: Colors.white,
+      color: AppTheme.surface,
       borderRadius: BorderRadius.circular(14),
-      boxShadow: [
-        BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 8, offset: const Offset(0, 2)),
-      ],
+      border: Border.all(color: AppTheme.border),
+      boxShadow: AppTheme.cardShadow,
     ),
     child: Column(
       children: [
         Container(
           padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(color: color.withOpacity(0.12), borderRadius: BorderRadius.circular(8)),
+          decoration: BoxDecoration(color: dimColor, borderRadius: BorderRadius.circular(8)),
           child: Icon(icon, size: 16, color: color),
         ),
         const SizedBox(height: 8),
-        Text(title, style: const TextStyle(fontSize: 11, color: Colors.black45)),
+        Text(title, style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
         const SizedBox(height: 4),
         FittedBox(
           child: Text(amount, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: color)),
@@ -313,35 +319,33 @@ Widget _quickAddCard(BuildContext context) {
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.surface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppTheme.primaryAccent.withOpacity(0.25)),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 8, offset: const Offset(0, 2)),
-        ],
+        border: Border.all(color: AppTheme.primary.withOpacity(0.3)),
+        boxShadow: AppTheme.cardShadow,
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppTheme.primaryAccent.withOpacity(0.12),
+              color: AppTheme.primaryDim,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(Icons.add_circle_outline_rounded, color: AppTheme.primaryAccent, size: 20),
+            child: const Icon(Icons.add_circle_outline_rounded, color: AppTheme.primary, size: 20),
           ),
           const SizedBox(width: 14),
           const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Add Transaction", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black87)),
+                Text("Add Transaction", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppTheme.textPrimary)),
                 SizedBox(height: 2),
-                Text("Record income or expense", style: TextStyle(fontSize: 12, color: Colors.black45)),
+                Text("Record income or expense", style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
               ],
             ),
           ),
-          Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey.shade400),
+          const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppTheme.textMuted),
         ],
       ),
     ),
