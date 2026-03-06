@@ -1,5 +1,6 @@
 import 'package:expense_tracker/models/transaction_model.dart';
 import 'package:expense_tracker/models/transaction_type.dart';
+import 'package:expense_tracker/pages/budget_page.dart';
 import 'package:expense_tracker/pages/transaction_history.dart';
 import 'package:expense_tracker/pages/transaction_page.dart';
 import 'package:expense_tracker/services/transaction_service.dart';
@@ -148,6 +149,8 @@ class _DashboardState extends State<Dashboard> {
             const SizedBox(height: 14),
             _quickAddCard(context),
             const SizedBox(height: 28),
+            _budgetCard(context),
+            const SizedBox(height: 14),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -269,7 +272,7 @@ class _DashboardState extends State<Dashboard> {
 }
 
 // ── Balance Card ──────────────────────────────────────────────────────────────
-
+ 
 Widget _balanceCard(dynamic currentBalance) {
   return Container(
     width: double.infinity,
@@ -465,6 +468,23 @@ Widget _quickAddCard(BuildContext context) {
           ),
         ],
       ),
+    ),
+  );
+}
+
+Widget _budgetCard(BuildContext context) {
+  return Card(
+    child: ListTile(
+      leading: const Icon(Icons.account_balance),
+      title: const Text("Budgets"),
+      subtitle: const Text("Manage your budgets"),
+      trailing: const Icon(Icons.arrow_forward_ios),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BudgetPage()),
+        );
+      },
     ),
   );
 }

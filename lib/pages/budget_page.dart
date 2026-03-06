@@ -54,7 +54,7 @@ class _BudgetPageState extends State<BudgetPage> {
             child: ListTile(
               title: Text(b.name),
 
-              subtitle: Text("Limit ₹${b.limit.toStringAsFixed(0)}"),
+              subtitle: Text("Limit ₹${b.budgetLimit.toStringAsFixed(0)}"),
             ),
           );
         },

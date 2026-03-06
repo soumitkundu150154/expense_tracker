@@ -40,10 +40,23 @@ class TransactionService {
           CREATE TABLE budgets(
             id TEXT PRIMARY KEY,
             name TEXT,
-            limit REAL,
+            note TEXT,
+            budgetLimit REAL,
             createdAt TEXT
           )
           ''');
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('''
+                  CREATE TABLE budgets(
+                    id TEXT PRIMARY KEY,
+                    name TEXT,
+                    budgetLimit REAL,
+                    createdAt TEXT
+                  )
+                ''');
+        }
       },
     );
   }

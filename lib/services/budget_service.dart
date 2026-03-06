@@ -10,7 +10,13 @@ class BudgetService {
 
     await db?.insert(
       'budgets',
-      budget.toMap(),
+      {
+        "id": budget.id,
+        "name": budget.name,
+        "budgetLimit": budget.budgetLimit,
+        "createdAt": budget.createdAt.toIso8601String(),
+        "note": budget.note,
+      },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -31,7 +37,7 @@ class BudgetService {
     final db = await TransactionService.database;
 
     await db?.delete(
-      'budget',
+      'budgets',
       where: 'id = ?',
       whereArgs: [id],
     );
