@@ -1,5 +1,6 @@
 import 'package:expense_tracker/models/transaction_model.dart';
 import 'package:expense_tracker/models/transaction_type.dart';
+import 'package:expense_tracker/pages/transaction_history.dart';
 import 'package:expense_tracker/pages/transaction_page.dart';
 import 'package:expense_tracker/services/transaction_service.dart';
 // import 'package:expense_tracker/theme/app_theme.dart';
@@ -33,9 +34,12 @@ class _DashboardState extends State<Dashboard> {
 
   String getGreeting() {
     final hour = DateTime.now().hour;
-    if (hour > 4 && hour < 12) return "Good Morning";
-    else if (hour > 12 && hour < 17) return "Good Afternoon";
-    else return "Good Evening";
+    if (hour > 4 && hour < 12)
+      return "Good Morning";
+    else if (hour > 12 && hour < 17)
+      return "Good Afternoon";
+    else
+      return "Good Evening";
   }
 
   Future<void> loadData() async {
@@ -44,8 +48,10 @@ class _DashboardState extends State<Dashboard> {
     double income = 0;
     double expense = 0;
     for (var t in txns) {
-      if (t.type == TransactionType.income) income += t.amount;
-      else expense += t.amount;
+      if (t.type == TransactionType.income)
+        income += t.amount;
+      else
+        expense += t.amount;
     }
     setState(() {
       transactions = txns;
@@ -100,7 +106,10 @@ class _DashboardState extends State<Dashboard> {
           loadData();
         },
         icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text('Add', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+        label: const Text(
+          'Add',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        ),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -114,11 +123,19 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   TextSpan(
                     text: '${getGreeting()},\n',
-                    style: const TextStyle(fontSize: 15, color: AppTheme.textSecondary, height: 2),
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: AppTheme.textSecondary,
+                      height: 2,
+                    ),
                   ),
                   TextSpan(
                     text: '$userName 👋',
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.textPrimary,
+                    ),
                   ),
                 ],
               ),
@@ -137,11 +154,28 @@ class _DashboardState extends State<Dashboard> {
               children: [
                 const Text(
                   'Recent Transactions',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.textPrimary,
+                  ),
                 ),
-                Text(
-                  '${transactions.length} total',
-                  style: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TransactionHistoryPage(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    '${transactions.length} total',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.textMuted,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -180,14 +214,20 @@ class _DashboardState extends State<Dashboard> {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
-            isExpense ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded,
+            isExpense
+                ? Icons.arrow_downward_rounded
+                : Icons.arrow_upward_rounded,
             color: isExpense ? AppTheme.expense : AppTheme.income,
             size: 20,
           ),
         ),
         title: Text(
           t.category,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: AppTheme.textPrimary),
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 15,
+            color: AppTheme.textPrimary,
+          ),
         ),
         subtitle: Text(
           t.note,
@@ -211,9 +251,16 @@ class _DashboardState extends State<Dashboard> {
       child: Center(
         child: Column(
           children: [
-            Icon(Icons.receipt_long_outlined, size: 52, color: AppTheme.textMuted),
+            Icon(
+              Icons.receipt_long_outlined,
+              size: 52,
+              color: AppTheme.textMuted,
+            ),
             SizedBox(height: 12),
-            Text('No transactions yet', style: TextStyle(color: AppTheme.textSecondary, fontSize: 14)),
+            Text(
+              'No transactions yet',
+              style: TextStyle(color: AppTheme.textSecondary, fontSize: 14),
+            ),
           ],
         ),
       ),
@@ -237,15 +284,27 @@ Widget _balanceCard(dynamic currentBalance) {
       children: [
         const Row(
           children: [
-            Icon(Icons.account_balance_wallet_outlined, color: Colors.white70, size: 16),
+            Icon(
+              Icons.account_balance_wallet_outlined,
+              color: Colors.white70,
+              size: 16,
+            ),
             SizedBox(width: 6),
-            Text("Current Balance", style: TextStyle(color: Colors.white70, fontSize: 13)),
+            Text(
+              "Current Balance",
+              style: TextStyle(color: Colors.white70, fontSize: 13),
+            ),
           ],
         ),
         const SizedBox(height: 10),
         Text(
           "₹ ${currentBalance.toStringAsFixed(2)}",
-          style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 0.5),
+          style: const TextStyle(
+            fontSize: 36,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            letterSpacing: 0.5,
+          ),
         ),
         const SizedBox(height: 12),
         Container(
@@ -254,7 +313,10 @@ Widget _balanceCard(dynamic currentBalance) {
             color: Colors.white.withOpacity(0.15),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Text("+ ₹1,200 this month", style: TextStyle(color: Colors.white, fontSize: 12)),
+          child: const Text(
+            "+ ₹1,200 this month",
+            style: TextStyle(color: Colors.white, fontSize: 12),
+          ),
         ),
       ],
     ),
@@ -266,11 +328,35 @@ Widget _balanceCard(dynamic currentBalance) {
 Widget _summaryRow(double income, double expense, double net) {
   return Row(
     children: [
-      Expanded(child: _summaryCard(title: "Income", amount: "₹${income.toStringAsFixed(0)}", color: AppTheme.income, icon: Icons.trending_up_rounded, dimColor: AppTheme.incomeDim)),
+      Expanded(
+        child: _summaryCard(
+          title: "Income",
+          amount: "₹${income.toStringAsFixed(0)}",
+          color: AppTheme.income,
+          icon: Icons.trending_up_rounded,
+          dimColor: AppTheme.incomeDim,
+        ),
+      ),
       const SizedBox(width: 10),
-      Expanded(child: _summaryCard(title: "Expense", amount: "₹${expense.toStringAsFixed(0)}", color: AppTheme.expense, icon: Icons.trending_down_rounded, dimColor: AppTheme.expenseDim)),
+      Expanded(
+        child: _summaryCard(
+          title: "Expense",
+          amount: "₹${expense.toStringAsFixed(0)}",
+          color: AppTheme.expense,
+          icon: Icons.trending_down_rounded,
+          dimColor: AppTheme.expenseDim,
+        ),
+      ),
       const SizedBox(width: 10),
-      Expanded(child: _summaryCard(title: "Net", amount: "₹${net.toStringAsFixed(0)}", color: AppTheme.primary, icon: Icons.balance_rounded, dimColor: AppTheme.primaryDim)),
+      Expanded(
+        child: _summaryCard(
+          title: "Net",
+          amount: "₹${net.toStringAsFixed(0)}",
+          color: AppTheme.primary,
+          icon: Icons.balance_rounded,
+          dimColor: AppTheme.primaryDim,
+        ),
+      ),
     ],
   );
 }
@@ -294,14 +380,27 @@ Widget _summaryCard({
       children: [
         Container(
           padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(color: dimColor, borderRadius: BorderRadius.circular(8)),
+          decoration: BoxDecoration(
+            color: dimColor,
+            borderRadius: BorderRadius.circular(8),
+          ),
           child: Icon(icon, size: 16, color: color),
         ),
         const SizedBox(height: 8),
-        Text(title, style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+        Text(
+          title,
+          style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+        ),
         const SizedBox(height: 4),
         FittedBox(
-          child: Text(amount, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: color)),
+          child: Text(
+            amount,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              color: color,
+            ),
+          ),
         ),
       ],
     ),
@@ -332,20 +431,38 @@ Widget _quickAddCard(BuildContext context) {
               color: AppTheme.primaryDim,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.add_circle_outline_rounded, color: AppTheme.primary, size: 20),
+            child: const Icon(
+              Icons.add_circle_outline_rounded,
+              color: AppTheme.primary,
+              size: 20,
+            ),
           ),
           const SizedBox(width: 14),
           const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Add Transaction", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: AppTheme.textPrimary)),
+                Text(
+                  "Add Transaction",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: AppTheme.textPrimary,
+                  ),
+                ),
                 SizedBox(height: 2),
-                Text("Record income or expense", style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+                Text(
+                  "Record income or expense",
+                  style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                ),
               ],
             ),
           ),
-          const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppTheme.textMuted),
+          const Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 14,
+            color: AppTheme.textMuted,
+          ),
         ],
       ),
     ),

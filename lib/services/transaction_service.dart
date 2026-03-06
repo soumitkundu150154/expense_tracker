@@ -35,6 +35,15 @@ class TransactionService {
           createdAt TEXT
           )
           ''');
+
+        await db.execute('''
+          CREATE TABLE budgets(
+            id TEXT PRIMARY KEY,
+            name TEXT,
+            limit REAL,
+            createdAt TEXT
+          )
+          ''');
       },
     );
   }
